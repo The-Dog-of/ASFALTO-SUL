@@ -1,0 +1,658 @@
+/* ══════════════════════════════════════════════════════════════
+   ASFALTOSUL — Folha de estilos global  v2025
+   Rua Washington Luiz 82, Porto Alegre - RS
+   (51) 98195-2501
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── 0. Google Fonts carregadas via <link> no HTML ── */
+
+/* ── 1. TOKENS ─────────────────────────────────────────────── */
+:root{
+  /* Cores */
+  --preto:   #0d0d0d;
+  --escuro:  #161616;
+  --card:    #1e1e1e;
+  --borda:   #2c2c2c;
+  --cinza:   #888;
+  --texto:   #d8d8d8;
+  --branco:  #f5f5f5;
+  --amarelo: #f5c518;
+  --amarelo-dim: rgba(245,197,24,.12);
+  --vermelho:#e03030;
+
+  /* Tipografia */
+  --font-titulo: 'Barlow Condensed', sans-serif;
+  --font-corpo:  'Inter', sans-serif;
+
+  /* Escala fluida */
+  --fs-xs:  clamp(.72rem, .68rem + .15vw, .8rem);
+  --fs-sm:  clamp(.85rem, .8rem  + .18vw, .95rem);
+  --fs-md:  clamp(1rem,   .95rem + .2vw,  1.1rem);
+  --fs-lg:  clamp(1.2rem, 1.1rem + .5vw,  1.5rem);
+  --fs-xl:  clamp(1.8rem, 1.4rem + 1.5vw, 2.6rem);
+  --fs-2xl: clamp(2.8rem, 2rem   + 3.5vw, 4.8rem);
+  --fs-3xl: clamp(3.6rem, 2.5rem + 5vw,   7rem);
+
+  /* Espaçamento */
+  --gap-sm: .75rem;
+  --gap:    1.25rem;
+  --gap-lg: 2rem;
+  --gap-xl: 4rem;
+  --gap-2xl:7rem;
+
+  /* Layout */
+  --max-w: 1200px;
+  --header-h: 76px;
+  --radius: 4px;
+
+  /* Animação */
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --fast: .2s var(--ease);
+  --base: .45s var(--ease);
+}
+
+/* ── 2. RESET ──────────────────────────────────────────────── */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; scroll-padding-top:calc(var(--header-h) + 8px); }
+body{
+  margin:0;
+  background:var(--preto);
+  color:var(--texto);
+  font-family:var(--font-corpo);
+  font-size:var(--fs-md);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+h1,h2,h3,h4{
+  font-family:var(--font-titulo);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  line-height:1;
+  margin:0 0 1rem;
+}
+p{ margin:0 0 1rem; }
+ul{ margin:0; padding:0; list-style:none; }
+button{ font-family:inherit; cursor:pointer; }
+::selection{ background:var(--amarelo); color:var(--preto); }
+a:focus-visible,button:focus-visible{ outline:2px solid var(--amarelo); outline-offset:3px; border-radius:2px; }
+
+@media (prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
+}
+
+/* ── 3. LAYOUT ─────────────────────────────────────────────── */
+.container{ max-width:var(--max-w); margin-inline:auto; padding-inline:1.5rem; }
+
+.sec{ padding-block: var(--gap-2xl); }
+.sec--sm{ padding-block: var(--gap-xl); }
+
+.sec-head{ margin-bottom:var(--gap-xl); }
+.sec-head--center{ text-align:center; max-width:680px; margin-inline:auto; margin-bottom:var(--gap-xl); }
+
+.kicker{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-family:var(--font-corpo); font-size:var(--fs-xs); font-weight:600;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--amarelo);
+  margin-bottom:.9rem;
+}
+.kicker::before{ content:''; width:20px; height:2px; background:var(--amarelo); flex-shrink:0; }
+.sec-head--center .kicker::before{ display:none; }
+
+h2.sec-titulo{ font-size:var(--fs-xl); color:var(--branco); }
+h2.sec-titulo span{ color:var(--amarelo); }
+
+/* ── 4. BARRA DE PROGRESSO ─────────────────────────────────── */
+.progress-bar{
+  position:fixed; top:0; left:0; right:0; height:3px; z-index:2000;
+  background:var(--borda);
+}
+.progress-fill{
+  height:100%; width:0%;
+  background:linear-gradient(90deg,var(--vermelho),var(--amarelo));
+  transition:width .06s linear;
+}
+
+/* ── 5. HEADER ─────────────────────────────────────────────── */
+.header{
+  position:fixed; top:3px; left:0; right:0; height:var(--header-h);
+  z-index:1000;
+  background:rgba(13,13,13,.88);
+  backdrop-filter:blur(12px) saturate(150%);
+  border-bottom:1px solid var(--borda);
+  display:flex; align-items:center;
+}
+.header .container{
+  display:flex; align-items:center;
+  justify-content:space-between; width:100%;
+}
+.header-logo img{ height:42px; width:auto; display:block; }
+
+.nav{ display:flex; align-items:center; gap:var(--gap-lg); }
+.nav-links{ display:flex; gap:var(--gap); }
+.nav-links a{
+  font-family:var(--font-titulo); font-size:var(--fs-sm); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--cinza);
+  padding:.3rem 0; position:relative;
+  transition:color var(--fast);
+}
+.nav-links a::after{
+  content:''; position:absolute; bottom:-2px; left:0;
+  width:0; height:2px; background:var(--amarelo);
+  transition:width var(--fast);
+}
+.nav-links a:hover,
+.nav-links a.ativo{ color:var(--branco); }
+.nav-links a:hover::after,
+.nav-links a.ativo::after{ width:100%; }
+
+/* CTA header */
+.btn-orcamento{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.65rem 1.4rem;
+  background:var(--amarelo); color:var(--preto);
+  font-family:var(--font-titulo); font-weight:700;
+  font-size:var(--fs-sm); letter-spacing:.14em; text-transform:uppercase;
+  border:none; border-radius:2px;
+  transition:background var(--fast), transform var(--fast);
+}
+.btn-orcamento:hover{ background:#ffd740; transform:translateY(-1px); }
+.btn-orcamento:active{ transform:translateY(0); }
+
+/* Mobile toggle */
+.nav-toggle{
+  display:none; flex-direction:column; gap:5px;
+  justify-content:center; align-items:center;
+  width:40px; height:40px;
+  background:transparent; border:1px solid var(--borda); border-radius:var(--radius);
+}
+.nav-toggle span{
+  display:block; width:18px; height:2px; background:var(--branco);
+  transition:transform .3s var(--ease), opacity .3s var(--ease);
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* ── 6. FAIXA DE PISTA (elemento assinatura) ───────────────── */
+/* Linha tracejada amarela que "viaja" horizontalmente —
+   implementada em CSS puro, zero JS, zero performance cost. */
+.road-stripe{
+  position:relative; width:100%; height:40px; overflow:hidden;
+  /* A "estrada": duas linhas de borda escura + tracejado central */
+  background:
+    linear-gradient(var(--borda) 0 1px, transparent 1px) top/100% 1px no-repeat,
+    linear-gradient(var(--borda) 0 1px, transparent 1px) bottom/100% 1px no-repeat;
+}
+.road-stripe::before{
+  content:'';
+  position:absolute;
+  top:50%; left:-30%;
+  transform:translateY(-50%);
+  width:160%;
+  height:3px;
+  /* dashes amarelas */
+  background:repeating-linear-gradient(
+    90deg,
+    var(--amarelo)   0   28px,
+    transparent 28px    52px
+  );
+  animation: drive 3s linear infinite;
+}
+@keyframes drive{ to{ transform:translateY(-50%) translateX(82px); } }
+
+/* ── 7. HERO ───────────────────────────────────────────────── */
+.hero{
+  padding-top:calc(var(--header-h) + 60px);
+  padding-bottom:var(--gap-2xl);
+  position:relative; overflow:hidden;
+}
+.hero::before{
+  /* gradiente de fundo, sem imagem, sem peso */
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 120%, rgba(245,197,24,.07), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% -10%, rgba(224,48,48,.06), transparent 50%);
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative; z-index:1;
+  max-width:860px;
+}
+.hero-badge{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.4rem .85rem; margin-bottom:1.5rem;
+  background:var(--amarelo-dim); border:1px solid rgba(245,197,24,.25); border-radius:99px;
+  font-size:var(--fs-xs); font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--amarelo);
+}
+.hero-badge .dot{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--amarelo);
+  box-shadow:0 0 0 4px rgba(245,197,24,.2);
+}
+.hero h1{
+  font-size:var(--fs-3xl);
+  color:var(--branco);
+  margin-bottom:1.5rem;
+  line-height:.95;
+}
+.hero h1 em{ color:var(--amarelo); font-style:normal; }
+.hero-sub{
+  font-size:var(--fs-lg); color:var(--cinza);
+  max-width:60ch; margin-bottom:2.5rem;
+  line-height:1.55;
+}
+.hero-ctas{ display:flex; flex-wrap:wrap; gap:var(--gap); }
+
+.btn-primary{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.85rem 1.9rem;
+  background:var(--amarelo); color:var(--preto);
+  font-family:var(--font-titulo); font-weight:700;
+  font-size:var(--fs-sm); letter-spacing:.14em; text-transform:uppercase;
+  border:none; border-radius:2px;
+  transition:background var(--fast), transform var(--fast);
+}
+.btn-primary:hover{ background:#ffd740; transform:translateY(-2px); }
+.btn-primary:active{ transform:translateY(0); }
+
+.btn-ghost{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.85rem 1.9rem;
+  background:transparent; color:var(--branco);
+  font-family:var(--font-titulo); font-weight:700;
+  font-size:var(--fs-sm); letter-spacing:.14em; text-transform:uppercase;
+  border:1px solid var(--borda); border-radius:2px;
+  transition:border-color var(--fast), color var(--fast), transform var(--fast);
+}
+.btn-ghost:hover{ border-color:var(--amarelo); color:var(--amarelo); transform:translateY(-2px); }
+
+/* Hero stats row */
+.hero-stats{
+  display:flex; flex-wrap:wrap;
+  gap:0;
+  margin-top:var(--gap-xl);
+  border:1px solid var(--borda); border-radius:var(--radius);
+  overflow:hidden;
+}
+.hero-stat{
+  flex:1; min-width:140px;
+  padding:1.4rem 1.5rem;
+  background:var(--card);
+  border-right:1px solid var(--borda);
+  text-align:center;
+}
+.hero-stat:last-child{ border-right:none; }
+.hero-stat-num{
+  font-family:var(--font-titulo); font-size:var(--fs-xl); font-weight:800;
+  color:var(--amarelo); line-height:1; margin-bottom:.4rem;
+}
+.hero-stat-label{
+  font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase; color:var(--cinza);
+}
+
+/* ── 8. CARDS GENÉRICOS ────────────────────────────────────── */
+.card{
+  background:var(--card);
+  border:1px solid var(--borda);
+  border-radius:var(--radius);
+  padding:1.75rem 1.5rem;
+  transition:border-color var(--fast), transform var(--fast);
+}
+.card:hover{ border-color:rgba(245,197,24,.35); transform:translateY(-4px); }
+
+.card-icon{
+  width:48px; height:48px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--amarelo-dim); border-radius:var(--radius);
+  color:var(--amarelo); margin-bottom:1.1rem;
+}
+.card-icon svg{ width:24px; height:24px; }
+
+.card h3{ font-size:var(--fs-md); color:var(--branco); margin-bottom:.5rem; }
+.card p{ font-size:var(--fs-sm); color:var(--cinza); margin:0; }
+
+/* Grid utilitária */
+.grid{ display:grid; gap:var(--gap); }
+.g2{ grid-template-columns:repeat(2,1fr); }
+.g3{ grid-template-columns:repeat(3,1fr); }
+.g4{ grid-template-columns:repeat(4,1fr); }
+
+/* ── 9. SPLIT (dois colunas) ────────────────────────────────── */
+.split{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap-2xl); align-items:center; }
+.split.inv .split-media{ order:2; }
+
+.split-media{
+  aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden;
+  border:1px solid var(--borda);
+}
+
+/* Placeholder de mídia — troque por <img> ou <video> */
+.media-ph{
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; gap:.75rem;
+  background:repeating-linear-gradient(
+    135deg,
+    var(--card) 0 12px,
+    var(--borda) 12px 24px
+  );
+  color:var(--cinza);
+  font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase;
+  text-align:center; padding:1rem;
+}
+.media-ph svg{ width:32px; height:32px; opacity:.4; }
+
+/* ── 10. NÚMEROS / ESTATÍSTICAS ─────────────────────────────── */
+.stats-row{
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--borda); border-radius:var(--radius); overflow:hidden;
+}
+.stat-item{
+  padding:2rem 1.25rem; text-align:center;
+  background:var(--card); border-right:1px solid var(--borda);
+}
+.stat-item:last-child{ border-right:none; }
+.stat-num{
+  font-family:var(--font-titulo); font-size:var(--fs-2xl); font-weight:800;
+  color:var(--amarelo); line-height:1;
+}
+.stat-label{ font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase; color:var(--cinza); margin-top:.5rem; }
+
+/* ── 11. FAIXA DE CLIENTES (ticker) ─────────────────────────── */
+.ticker-wrap{ overflow:hidden; border-top:1px solid var(--borda); border-bottom:1px solid var(--borda); padding:1.5rem 0; }
+.ticker{
+  display:flex; gap:4rem;
+  width:max-content;
+  animation:ticker 28s linear infinite;
+}
+.ticker:hover{ animation-play-state:paused; }
+@keyframes ticker{ to{ transform:translateX(-50%); } }
+
+.ticker-item{
+  font-family:var(--font-titulo); font-size:var(--fs-lg); font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; white-space:nowrap;
+  color:var(--cinza);
+  transition:color var(--fast);
+}
+.ticker-item:hover{ color:var(--branco); }
+.ticker-item.destaque{ color:var(--amarelo); }
+
+/* ── 12. GRID DE OBRAS ─────────────────────────────────────── */
+.obras-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:var(--gap);
+}
+.obra-card{
+  border:1px solid var(--borda); border-radius:var(--radius);
+  overflow:hidden; background:var(--card);
+  transition:border-color var(--fast), transform var(--fast);
+}
+.obra-card:hover{ border-color:rgba(245,197,24,.35); transform:translateY(-4px); }
+
+.obra-media{
+  aspect-ratio:4/3;
+  position:relative; overflow:hidden;
+}
+.obra-media img,
+.obra-media iframe,
+.obra-media video{
+  width:100%; height:100%; display:block;
+}
+.obra-media img,
+.obra-media video{
+  object-fit:cover;
+}
+.obra-media iframe{
+  border:none;
+}
+.obra-media img{
+  transition:transform .6s var(--ease);
+}
+.obra-card:hover .obra-media img{ transform:scale(1.04); }
+
+.obra-body{ padding:1.2rem 1.25rem 1.5rem; }
+.obra-tag{
+  font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--amarelo); margin-bottom:.4rem;
+}
+.obra-body h3{ font-size:var(--fs-md); color:var(--branco); margin-bottom:.3rem; }
+.obra-body p{ font-size:var(--fs-sm); color:var(--cinza); margin:0; }
+
+/* ── 13. HERO INTERNO (páginas internas) ───────────────────── */
+.page-hero{
+  padding-top:calc(var(--header-h) + 80px);
+  padding-bottom:var(--gap-xl);
+}
+.page-hero h1{ font-size:var(--fs-2xl); color:var(--branco); margin-bottom:.75rem; }
+.page-hero .sub{ font-size:var(--fs-lg); color:var(--cinza); max-width:56ch; }
+
+/* ── 14. FORMULÁRIO ────────────────────────────────────────── */
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap); }
+.form-grid .full{ grid-column:1/-1; }
+
+.field{ display:flex; flex-direction:column; gap:.45rem; }
+.field label{
+  font-size:var(--fs-xs); font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--cinza);
+}
+.field input,
+.field select,
+.field textarea{
+  padding:.85rem 1rem;
+  background:var(--card); border:1px solid var(--borda); border-radius:2px;
+  color:var(--branco); font-family:var(--font-corpo); font-size:var(--fs-sm);
+  transition:border-color var(--fast);
+}
+.field input::placeholder,
+.field textarea::placeholder{ color:var(--borda); }
+.field input:focus,
+.field select:focus,
+.field textarea:focus{ border-color:var(--amarelo); outline:none; }
+.field select{ appearance:none; cursor:pointer; }
+.field textarea{ resize:vertical; min-height:130px; }
+
+.form-msg{
+  padding:.85rem 1rem; border-radius:2px;
+  font-size:var(--fs-sm); display:none;
+}
+.form-msg.ok{ display:block; border:1px solid #4caf6c; color:#4caf6c; }
+.form-msg.err{ display:block; border:1px solid var(--vermelho); color:var(--vermelho); }
+
+/* ── 15. CONTATO CARDS ─────────────────────────────────────── */
+.contato-grid{ display:grid; grid-template-columns:1.2fr .8fr; gap:var(--gap-2xl); align-items:start; }
+
+.contato-info{ display:flex; flex-direction:column; gap:1.5rem; }
+.contato-item{
+  display:flex; gap:1rem; align-items:flex-start;
+  padding:1.4rem; background:var(--card);
+  border:1px solid var(--borda); border-radius:var(--radius);
+}
+.contato-item-icon{
+  width:44px; height:44px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--amarelo-dim); border-radius:var(--radius);
+  color:var(--amarelo);
+}
+.contato-item-icon svg{ width:22px; height:22px; }
+.contato-item-texto h4{ font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase; color:var(--cinza); margin-bottom:.3rem; }
+.contato-item-texto p{ font-size:var(--fs-md); color:var(--branco); margin:0; }
+.contato-item-texto a{ color:var(--amarelo); }
+
+.map-wrap{
+  aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden;
+  border:1px solid var(--borda);
+}
+.map-wrap iframe{ width:100%; height:100%; border:0; display:block; }
+
+/* ── 16. CLIENTES GRID ─────────────────────────────────────── */
+.clientes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:2rem;
+  justify-items:center;
+  align-items:center;
+}
+.cliente-card{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+  background:transparent;
+  border:none;
+  border-radius:0;
+  font-family:var(--font-titulo);
+  font-size:var(--fs-lg);
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  color:inherit;
+  text-align:center;
+  transition:transform var(--fast);
+  min-height:auto;
+}
+.cliente-card:hover{ transform:translateY(-2px); }
+.cliente-card img{ max-height:96px; width:auto; filter:grayscale(0) brightness(1.2); transition:filter var(--fast), transform var(--fast); }
+.cliente-card:hover img{ filter:grayscale(0) brightness(1); transform:scale(1.03); }
+.cliente-card.logo-hosted{ padding:0; background:transparent; }
+
+/* ── 17. CTA BANNER ────────────────────────────────────────── */
+.cta-banner{
+  position:relative; overflow:hidden;
+  padding:var(--gap-xl) var(--gap);
+  background:var(--card); border:1px solid var(--borda); border-radius:var(--radius);
+  text-align:center;
+}
+.cta-banner::before{
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 110%, rgba(245,197,24,.08), transparent 60%);
+  pointer-events:none;
+}
+.cta-banner h2{ font-size:var(--fs-xl); color:var(--branco); margin-bottom:.75rem; position:relative; z-index:1; }
+.cta-banner p{ color:var(--cinza); font-size:var(--fs-lg); max-width:54ch; margin-inline:auto; margin-bottom:var(--gap-lg); position:relative; z-index:1; }
+.cta-banner .btns{ display:flex; gap:var(--gap); justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
+
+/* ── 18. FOOTER ────────────────────────────────────────────── */
+.footer{
+  border-top:1px solid var(--borda);
+  padding-block:var(--gap-xl) var(--gap-lg);
+}
+.footer-grid{
+  display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:var(--gap-xl);
+  margin-bottom:var(--gap-xl);
+}
+.footer-brand img{ height:38px; margin-bottom:1rem; }
+.footer-brand p{ font-size:var(--fs-sm); color:var(--cinza); max-width:32ch; }
+.footer-social{ display:flex; gap:.6rem; margin-top:1.25rem; }
+.footer-social a{
+  width:36px; height:36px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--borda); border-radius:50%; color:var(--cinza);
+  transition:border-color var(--fast), color var(--fast);
+}
+.footer-social a:hover{ border-color:var(--amarelo); color:var(--amarelo); }
+.footer-social svg{ width:16px; height:16px; }
+
+.footer-col h4{
+  font-family:var(--font-corpo); font-size:var(--fs-xs); font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--cinza);
+  margin-bottom:1.1rem;
+}
+.footer-col ul{ display:flex; flex-direction:column; gap:.6rem; }
+.footer-col a{ font-size:var(--fs-sm); color:var(--texto); transition:color var(--fast); }
+.footer-col a:hover{ color:var(--amarelo); }
+
+.footer-bottom{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;
+  padding-top:var(--gap-lg); border-top:1px solid var(--borda);
+  font-size:var(--fs-xs); color:var(--cinza); letter-spacing:.06em;
+}
+
+/* ── 19. WHATSAPP FLUTUANTE ─────────────────────────────────── */
+.whats-float{
+  position:fixed; bottom:1.75rem; right:1.75rem; z-index:1100;
+  display:flex; align-items:center; gap:.6rem;
+  padding:.85rem 1.2rem .85rem .85rem;
+  background:#25d366; color:#0b2117;
+  border-radius:99px;
+  font-family:var(--font-titulo); font-weight:700;
+  font-size:var(--fs-xs); letter-spacing:.12em; text-transform:uppercase;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.7);
+  transition:transform var(--fast), box-shadow var(--fast);
+}
+.whats-float:hover{ transform:translateY(-3px); box-shadow:0 14px 36px -8px rgba(0,0,0,.8); }
+.whats-float svg{ width:22px; height:22px; flex-shrink:0; }
+.whats-float .txt{ display:inline; }
+
+/* ── 20. ANIMAÇÕES DE ENTRADA ───────────────────────────────── */
+.reveal{
+  opacity:0; transform:translateY(24px);
+  transition:opacity .7s var(--ease), transform .7s var(--ease);
+}
+.reveal.vis{ opacity:1; transform:translateY(0); }
+
+.stagger.vis > *:nth-child(1){ transition-delay:.04s; }
+.stagger.vis > *:nth-child(2){ transition-delay:.1s; }
+.stagger.vis > *:nth-child(3){ transition-delay:.16s; }
+.stagger.vis > *:nth-child(4){ transition-delay:.22s; }
+.stagger.vis > *:nth-child(5){ transition-delay:.28s; }
+.stagger.vis > *:nth-child(6){ transition-delay:.34s; }
+.stagger > *{
+  opacity:0; transform:translateY(24px);
+  transition:opacity .6s var(--ease), transform .6s var(--ease);
+}
+.stagger.vis > *{ opacity:1; transform:translateY(0); }
+
+/* ── 21. RESPONSIVO ─────────────────────────────────────────── */
+@media(max-width:1060px){
+  .footer-grid{ grid-template-columns:1fr 1fr; }
+  .footer-brand{ grid-column:1/-1; }
+  .clientes-grid{ grid-template-columns:repeat(3,1fr); }
+  .stats-row{ grid-template-columns:repeat(2,1fr); }
+  .stat-item:nth-child(2){ border-right:none; }
+  .stat-item:nth-child(1),
+  .stat-item:nth-child(2){ border-bottom:1px solid var(--borda); }
+  .obras-grid{ grid-template-columns:1fr 1fr; }
+  .g3{ grid-template-columns:1fr 1fr; }
+  .g4{ grid-template-columns:1fr 1fr; }
+}
+
+@media(max-width:780px){
+  :root{ --header-h:68px; }
+  .nav-toggle{ display:flex; }
+  .nav{
+    position:fixed; inset:71px var(--gap) auto;
+    flex-direction:column; align-items:stretch;
+    padding:1.25rem; gap:1.5rem;
+    background:var(--escuro); border:1px solid var(--borda); border-radius:var(--radius);
+    opacity:0; visibility:hidden; transform:translateY(-8px);
+    transition:opacity var(--fast), transform var(--fast), visibility var(--fast);
+  }
+  .nav.open{ opacity:1; visibility:visible; transform:translateY(0); }
+  .nav-links{ flex-direction:column; gap:var(--gap-sm); }
+  .nav-links a{ font-size:var(--fs-md); }
+  .btn-orcamento{ width:100%; justify-content:center; }
+
+  .split{ grid-template-columns:1fr; }
+  .split.inv .split-media{ order:0; }
+  .contato-grid{ grid-template-columns:1fr; }
+  .form-grid{ grid-template-columns:1fr; }
+  .obras-grid{ grid-template-columns:1fr; }
+  .clientes-grid{ grid-template-columns:1fr 1fr; }
+  .hero-stats{ grid-template-columns:1fr 1fr; }
+  .g2,.g3,.g4{ grid-template-columns:1fr; }
+  .footer-grid{ grid-template-columns:1fr; }
+}
+
+@media(max-width:480px){
+  .clientes-grid{ grid-template-columns:1fr; }
+  .whats-float .txt{ display:none; }
+  .whats-float{ padding:.9rem; }
+}

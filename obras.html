@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Galeria de obras da Asfaltosul: Maiojama, Ceva GM, Condomínio Gravataí e muito mais. Pavimentação asfáltica em Porto Alegre e RS.">
+  <title>Obras — Asfaltosul Pavimentação Asfáltica</title>
+  <link rel="icon" href="assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .lightbox{
+      position:fixed; inset:0; z-index:2000;
+      background:rgba(0,0,0,.92);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; visibility:hidden;
+      transition:opacity .3s var(--ease), visibility .3s var(--ease);
+    }
+    .lightbox.open{ opacity:1; visibility:visible; }
+    .lightbox img{
+      max-width:90vw; max-height:88vh;
+      border-radius:2px; object-fit:contain;
+      box-shadow:0 30px 80px rgba(0,0,0,.8);
+    }
+    .lb-close{
+      position:absolute; top:1.25rem; right:1.5rem;
+      font-size:2rem; color:#fff; cursor:pointer; background:none; border:none;
+      line-height:1; opacity:.7; transition:opacity .2s;
+    }
+    .lb-close:hover{ opacity:1; }
+    .lb-prev, .lb-next{
+      position:absolute; top:50%; transform:translateY(-50%);
+      font-size:2.5rem; color:#fff; cursor:pointer;
+      background:none; border:none; padding:1rem; opacity:.5;
+      transition:opacity .2s;
+    }
+    .lb-prev:hover, .lb-next:hover{ opacity:1; }
+    .lb-prev{ left:.5rem; }
+    .lb-next{ right:.5rem; }
+    .lb-caption{
+      position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%);
+      font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase;
+      color:rgba(255,255,255,.6); white-space:nowrap;
+    }
+
+    
+    .obra-media.clickable{ cursor:zoom-in; }
+    .obra-media.clickable img:hover{ transform:scale(1.06); }
+
+    
+    .filter-row{ display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:var(--gap-xl); }
+    .fbtn{
+      padding:.55rem 1.2rem;
+      background:transparent; border:1px solid var(--borda); border-radius:2px;
+      font-family:var(--font-titulo); font-weight:600;
+      font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase;
+      color:var(--cinza); cursor:pointer;
+      transition:all var(--fast);
+    }
+    .fbtn:hover{ border-color:var(--amarelo); color:var(--branco); }
+    .fbtn.on{ background:var(--amarelo); border-color:var(--amarelo); color:var(--preto); }
+
+    .obra-card[data-cat]{ transition:opacity .35s var(--ease), transform .35s var(--ease); }
+    .obra-card.hidden{ display:none; }
+
+    
+    .reels-modal{
+      position:fixed; inset:0; z-index:1999;
+      background:rgba(0,0,0,.95);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; visibility:hidden;
+      transition:opacity .3s var(--ease), visibility .3s var(--ease);
+      overflow:hidden;
+    }
+    .reels-modal.open{
+      opacity:1; visibility:visible;
+    }
+    .reels-container{
+      position:relative;
+      width:min(100vw, 90vh * 9 / 16);
+      height:min(100vh, 100vw * 16 / 9);
+      max-width:450px;
+      max-height:800px;
+      display:flex;
+      flex-direction:column;
+      snap-type:y mandatory;
+      overflow-y:scroll;
+      scroll-behavior:smooth;
+      scrollbar-width:none;
+      border-radius:32px;
+      background:var(--preto);
+      border:3px solid var(--borda);
+      box-shadow:0 20px 60px rgba(0,0,0,.9);
+    }
+    .reels-container::-webkit-scrollbar{
+      display:none;
+    }
+    .reel{
+      width:100%;
+      aspect-ratio:9 / 16;
+      flex-shrink:0; position:relative;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--card); overflow:hidden;
+      scroll-snap-align:start;
+    }
+    .reel video,
+    .reel iframe,
+    .reel img{
+      width:100%; height:100%;
+      object-fit:cover;
+      object-position:center;
+    }
+    .reel-info{
+      position:absolute; bottom:0; left:0; right:0;
+      background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.4), transparent);
+      padding:2.5rem 1rem 1rem;
+      color:#fff;
+      z-index:10;
+      text-align:center;
+    }
+    .reel-info h3{
+      font-family:var(--font-titulo); font-size:var(--fs-md);
+      font-weight:700; color:var(--branco);
+      margin:0 0 .3rem;
+      line-height:1.2;
+    }
+    .reel-info p{
+      font-size:var(--fs-xs); color:rgba(255,255,255,.8);
+      margin:0; line-height:1.3;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .reel-close{
+      position:absolute; top:1rem; right:1rem; z-index:2001;
+      font-size:1.75rem; color:#fff; background:rgba(0,0,0,.5); border:none;
+      cursor:pointer; line-height:1; opacity:.8;
+      transition:opacity .2s, background .2s;
+      padding:.3rem .5rem; border-radius:4px;
+    }
+    .reel-close:hover{ opacity:1; background:rgba(0,0,0,.8); }
+    .reel-nav{
+      position:absolute; z-index:2001;
+      font-size:1.75rem; color:rgba(255,255,255,.7); background:none;
+      border:none; cursor:pointer; padding:.5rem;
+      transition:color .2s, transform .2s;
+    }
+    .reel-nav:hover{
+      color:#fff; transform:scale(1.15);
+    }
+    .reel-prev{ top:1rem; left:1rem; }
+    .reel-next{ top:1rem; right:4.5rem; }
+    .reel-indicator{
+      position:absolute; bottom:1rem; left:50%; transform:translateX(-50%); z-index:2001;
+      background:rgba(0,0,0,.7); padding:.4rem .6rem;
+      border-radius:99px; color:#fff;
+      font-size:var(--fs-xs); font-weight:600;
+      letter-spacing:.1em;
+    }
+    @media(max-width:600px){
+      .reels-container{
+        width:100vw;
+        height:100vh;
+        max-width:100%;
+        max-height:100%;
+        border-radius:0;
+        border:none;
+      }
+      .reel-close{ top:.75rem; right:.75rem; font-size:1.5rem; }
+      .reel-nav{ font-size:1.5rem; }
+      .reel-prev{ left:.75rem; top:.75rem; }
+      .reel-next{ right:3.5rem; top:.75rem; }
+      .reel-info h3{ font-size:var(--fs-sm); }
+      .reel-info p{ font-size:var(--fs-xs); }
+      .reel-indicator{ bottom:.75rem; font-size:var(--fs-xs); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" aria-hidden="true"><div class="progress-fill"></div></div>
+
+<header class="header">
+  <div class="container">
+    <a href="index.html" class="header-logo"><img src="assets/img/logo.png" alt="Asfaltosul"></a>
+    <nav class="nav" id="main-nav">
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="empresa.html">Empresa</a></li>
+        <li><a href="servicos.html">Serviços</a></li>
+        <li><a href="clientes.html">Clientes</a></li>
+        <li><a href="obras.html">Obras</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+      <a href="contato.html" class="btn-orcamento">Pedir orçamento</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<section class="page-hero">
+  <div class="container">
+    <p class="kicker">Portfólio</p>
+    <h1>Obras que <span style="color:var(--amarelo)">falam por si.</span></h1>
+    <p class="sub">Conheça alguns dos trabalhos mais recentes da Asfaltosul — pavimentações, pátios industriais, acessos e recapeamentos entregues com qualidade e pontualidade.</p>
+  </div>
+</section>
+
+<div class="road-stripe" aria-hidden="true"></div>
+
+<section class="sec sec--sm">
+  <div class="container">
+
+    
+    <div class="filter-row reveal" role="group" aria-label="Filtrar obras">
+      <button class="fbtn on" data-filter="todos">Todos</button>
+      <button class="fbtn" data-filter="pavimentacao">Pavimentação</button>
+      <button class="fbtn" data-filter="patio">Pátio Industrial</button>
+      <button class="fbtn" data-filter="condominios">Condomínios</button>
+      <button class="fbtn" data-filter="recapeamento">Recapeamento</button>
+    </div>
+
+    <div class="obras-grid" id="obras-grid">
+
+      
+      <article class="obra-card" data-cat="pavimentacao">
+        <div class="obra-media clickable"
+             data-gallery="maiojama"
+             data-imgs='[
+               "assets/img/maijima/ma1.jpg",
+               "assets/img/maijima/ma2.jpg",
+               "assets/img/maijima/ma3.jpg",
+               "assets/img/maijima/ma4.jpg"
+             ]'>
+          <img src="assets/img/maijima/ma1.jpg"
+               alt="Maiojama Borges de Medeiros — pavimentação asfáltica" loading="lazy">
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Pavimentação · 4 fotos</p>
+          <h3>Maiojama Borges de Medeiros</h3>
+          <p>Aplicação de CBUQ e acabamento final em área comercial de alto fluxo em Porto Alegre.</p>
+        </div>
+      </article>
+
+      
+      <article class="obra-card" data-cat="patio">
+        <div class="obra-media clickable"
+             data-gallery="ceva"
+             data-imgs='[
+               "assets/img/ceva/ceva01.jpg",
+               "assets/img/ceva/ceva02.jpg",
+               "assets/img/ceva/ceva03.jpg",
+               "assets/img/ceva/ceva04.jpg",
+               "assets/img/ceva/ceva05.jpg",
+               "assets/img/ceva/ceva06.jpg",
+               "assets/img/ceva/ceva07.jpg",
+               "assets/img/ceva/ceva08.jpg"
+             ]'>
+          <img src="assets/img/ceva/ceva01.jpg"
+               alt="Ceva GM — pavimentação de pátio industrial" loading="lazy">
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Pátio Industrial · 8 fotos</p>
+          <h3>Ceva GM</h3>
+          <p>Pavimentação de pátio para operação logística de alta movimentação de carga.</p>
+        </div>
+      </article>
+
+      
+      <article class="obra-card" data-cat="condominios">
+        <div class="obra-media">
+          <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/fqFHD_XJ4XU"
+            title="Vídeo do Condomínio Gravataí"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen loading="lazy"></iframe>
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Condomínio · Vídeo</p>
+          <h3>Condomínio Gravataí</h3>
+          <p>Pavimentação de vias internas, estacionamentos e drenagem pluvial em condomínio residencial.</p>
+        </div>
+      </article>
+
+      
+      <article class="obra-card" data-cat="patio">
+        <div class="obra-media clickable"
+             data-gallery="havan"
+             data-imgs='[
+               "assets/img/havan/h1.jpeg",
+               "assets/img/havan/h2.jpeg",
+               "assets/img/havan/h3.jpeg",
+               "assets/img/havan/h4.jpeg",
+               "assets/img/havan/h5.jpeg",
+               "assets/img/havan/h7.jpeg"
+             ]'>
+          <img src="assets/img/havan/h1.jpeg"
+               alt="Havan — pavimentação de estacionamento" loading="lazy">
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Pátio Industrial · 6 fotos</p>
+          <h3>Havan</h3>
+          <p>Pavimentação de estacionamento e pátio de manobra em grande área comercial — CBUQ com acabamento de qualidade premium.</p>
+        </div>
+      </article>
+
+
+    </div>
+
+  </div>
+</section>
+
+
+<section class="sec sec--sm" style="text-align:center;">
+  <div class="container">
+    <div class="reveal" style="margin-bottom:var(--gap-xl);">
+      <p class="kicker" style="justify-content:center;">Galeria de vídeos</p>
+      <h2 style="font-family:var(--font-titulo); font-size:var(--fs-xl); color:var(--branco); margin-bottom:1rem;">Assista nossos reels</h2>
+      <button id="open-reels" class="btn-primary">Abrir reels</button>
+    </div>
+  </div>
+</section>
+
+<div class="reels-modal" id="reels-modal">
+  <div class="reels-container">
+    
+      <div class="reel">
+        <video autoplay muted playsinline loop>
+          <source src="assets/img/havan/h6.mp4" type="video/mp4">
+        </video>
+        <div class="reel-info">
+          <h3>Pátio Logístico</h3>
+          <p>Execução de CBUQ em pátio para movimentação de veículos pesados — base estabilizada.</p>
+        </div>
+      </div>
+
+    
+    <div class="reel">
+        <video autoplay muted playsinline loop>
+          <source src="assets/img/ceva/ceva09.mp4" type="video/mp4">
+        </video>
+        <div class="reel-info">
+          <h3>Condomínio Gravataí</h3>
+          <p>Pavimentação de vias internas, estacionamentos e drenagem pluvial em condomínio residencial.</p>
+        </div>
+    </div>
+
+    
+    <div class="reel">
+      <img src="assets/img/havan/h1.jpeg" alt="Havan">
+      <div class="reel-info">
+        <h3>Havan</h3>
+        <p>Pavimentação de estacionamento e pátio de manobra em grande área comercial — CBUQ com acabamento premium.</p>
+      </div>
+    </div>
+
+    
+    <div class="reel">
+      <img src="assets/img/maijima/ma1.jpg" alt="Maiojama">
+      <div class="reel-info">
+        <h3>Maiojama Borges de Medeiros</h3>
+        <p>Aplicação de CBUQ e acabamento final em área comercial de alto fluxo em Porto Alegre.</p>
+      </div>
+    </div>
+
+    
+    <div class="reel">
+      <img src="assets/img/ceva/ceva01.jpg" alt="Ceva GM">
+      <div class="reel-info">
+        <h3>Ceva GM</h3>
+        <p>Pavimentação de pátio para operação logística de alta movimentação de carga.</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="reel-close" id="reel-close" aria-label="Fechar reels">×</button>
+  <button class="reel-nav reel-prev" id="reel-prev" aria-label="Anterior">▲</button>
+  <button class="reel-nav reel-next" id="reel-next" aria-label="Próximo">▼</button>
+  <div class="reel-indicator">
+    <span id="reel-counter"></span>
+  </div>
+</div>
+
+<section class="sec sec--sm">
+  <div class="container">
+    <div class="cta-banner reveal">
+      <h2>Quer uma obra assim?</h2>
+      <p>Fale com a nossa equipe e receba orçamento sem compromisso.</p>
+      <div class="btns">
+        <a href="https://api.whatsapp.com/send?phone=555198195250&text=Ol%C3%A1%21+Vi+as+obras+no+site+e+gostaria+de+um+or%C3%A7amento." target="_blank" rel="noopener" class="btn-primary">Chamar no WhatsApp</a>
+        <a href="contato.html" class="btn-ghost">Formulário de orçamento</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visualização de imagem">
+  <button class="lb-close" id="lb-close" aria-label="Fechar">×</button>
+  <button class="lb-prev" id="lb-prev" aria-label="Anterior">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" id="lb-next" aria-label="Próxima">›</button>
+  <p class="lb-caption" id="lb-caption"></p>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><img src="assets/img/logo.png" alt="Asfaltosul"><p>Pavimentação asfáltica, terraplanagem e recapeamento em Porto Alegre e todo o RS desde 2006.</p><div class="footer-social"><a href="https://api.whatsapp.com/send?phone=555198195250" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A12 12 0 0 0 3.47 20.53L2 22l1.5-.5 1-.34A12 12 0 1 0 20.52 3.48zm-8.52 18a10 10 0 0 1-5.18-1.45l-.37-.22-3.84 1 1-3.73-.24-.38A10 10 0 1 1 12 21.5zm5.5-7.43c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.65.07a8.14 8.14 0 0 1-2.39-1.47 9 9 0 0 1-1.66-2.06c-.17-.3 0-.46.13-.6s.3-.35.44-.52a2 2 0 0 0 .3-.5.55.55 0 0 0 0-.52c-.07-.15-.67-1.62-.92-2.22s-.49-.5-.67-.51h-.57a1.1 1.1 0 0 0-.8.37 3.36 3.36 0 0 0-1.05 2.5 5.84 5.84 0 0 0 1.22 3.1 13.38 13.38 0 0 0 5.13 4.52c.72.31 1.28.5 1.72.64a4.14 4.14 0 0 0 1.9.12 3.09 3.09 0 0 0 2.02-1.43 2.5 2.5 0 0 0 .17-1.43c-.07-.12-.27-.2-.57-.35z"/></svg></a><a href="mailto:asfaltosul@gmail.com" aria-label="E-mail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a></div></div>
+      <nav class="footer-col"><h4>Páginas</h4><ul><li><a href="index.html">Início</a></li><li><a href="empresa.html">Empresa</a></li><li><a href="servicos.html">Serviços</a></li><li><a href="clientes.html">Clientes</a></li><li><a href="obras.html">Obras</a></li><li><a href="contato.html">Contato</a></li></ul></nav>
+      <nav class="footer-col"><h4>Serviços</h4><ul><li><a href="servicos.html">Pavimentação CBUQ</a></li><li><a href="servicos.html">Terraplanagem</a></li><li><a href="servicos.html">Recapeamento</a></li><li><a href="servicos.html">Drenagem Pluvial</a></li><li><a href="servicos.html">Sinalização</a></li><li><a href="servicos.html">Tapa-Buracos</a></li></ul></nav>
+      <div class="footer-col"><h4>Contato</h4><ul><li><a href="tel:+555198195250">(51) 98195-2501</a></li><li><a href="tel:+555130246900">(51) 3024-6900</a></li><li><a href="mailto:asfaltosul@gmail.com">asfaltosul@gmail.com</a></li><li style="color:var(--cinza);font-size:var(--fs-sm);">Rua Washington Luiz, 82<br>Centro Histórico — Porto Alegre RS</li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© <span data-year></span> Asfaltosul Pavimentação Asfáltica EPP</span><span>Porto Alegre, Rio Grande do Sul</span></div>
+  </div>
+</footer>
+
+<a class="whats-float" href="https://api.whatsapp.com/send?phone=555198195250&text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+um+or%C3%A7amento." target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A12 12 0 0 0 3.47 20.53L2 22l1.5-.5 1-.34A12 12 0 1 0 20.52 3.48zm-8.52 18a10 10 0 0 1-5.18-1.45l-.37-.22-3.84 1 1-3.73-.24-.38A10 10 0 1 1 12 21.5zm5.5-7.43c-.3-.15-1.77-.87-2.04-.97s-.47-.15-.67.15-.77.97-.94 1.17-.35.22-.65.07a8.14 8.14 0 0 1-2.39-1.47 9 9 0 0 1-1.66-2.06c-.17-.3 0-.46.13-.6s.3-.35.44-.52a2 2 0 0 0 .3-.5.55.55 0 0 0 0-.52c-.07-.15-.67-1.62-.92-2.22s-.49-.5-.67-.51h-.57a1.1 1.1 0 0 0-.8.37 3.36 3.36 0 0 0-1.05 2.5 5.84 5.84 0 0 0 1.22 3.1 13.38 13.38 0 0 0 5.13 4.52c.72.31 1.28.5 1.72.64a4.14 4.14 0 0 0 1.9.12 3.09 3.09 0 0 0 2.02-1.43 2.5 2.5 0 0 0 .17-1.43c-.07-.12-.27-.2-.57-.35z"/></svg><span class="txt">WhatsApp</span></a>
+
+<script src="assets/js/main.js"></script>
+<script>
+
+const filtros   = document.querySelectorAll('.fbtn');
+const cards     = document.querySelectorAll('.obra-card[data-cat]');
+
+filtros.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filtros.forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const f = btn.dataset.filter;
+    cards.forEach(c => {
+      c.classList.toggle('hidden', f !== 'todos' && c.dataset.cat !== f);
+    });
+  });
+});
+
+const lb       = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lb-img');
+const lbCap    = document.getElementById('lb-caption');
+const lbClose  = document.getElementById('lb-close');
+const lbPrev   = document.getElementById('lb-prev');
+const lbNext   = document.getElementById('lb-next');
+
+let currentImgs = [];
+let currentIdx  = 0;
+
+function openLb(imgs, idx, title) {
+  currentImgs = imgs;
+  currentIdx  = idx;
+  lbImg.src   = imgs[idx];
+  lbImg.alt   = title || '';
+  lbCap.textContent = `${idx + 1} / ${imgs.length}`;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function navigate(dir) {
+  currentIdx = (currentIdx + dir + currentImgs.length) % currentImgs.length;
+  lbImg.src  = currentImgs[currentIdx];
+  lbCap.textContent = `${currentIdx + 1} / ${currentImgs.length}`;
+}
+
+document.querySelectorAll('.obra-media.clickable').forEach(media => {
+  media.addEventListener('click', () => {
+    const imgs  = JSON.parse(media.dataset.imgs || '[]');
+    const title = media.closest('.obra-card')?.querySelector('h3')?.textContent || '';
+    if (imgs.length) openLb(imgs, 0, title);
+  });
+});
+
+lbClose.addEventListener('click', closeLb);
+lbPrev.addEventListener('click', () => navigate(-1));
+lbNext.addEventListener('click', () => navigate(1));
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('open')) return;
+  if (e.key === 'Escape')      closeLb();
+  if (e.key === 'ArrowLeft')   navigate(-1);
+  if (e.key === 'ArrowRight')  navigate(1);
+});
+
+const reelsModal     = document.getElementById('reels-modal');
+const reelsContainer = document.querySelector('.reels-container');
+const openReelsBtn   = document.getElementById('open-reels');
+const closeReelsBtn  = document.getElementById('reel-close');
+const prevReelBtn    = document.getElementById('reel-prev');
+const nextReelBtn    = document.getElementById('reel-next');
+const reelCounter    = document.getElementById('reel-counter');
+const reels          = document.querySelectorAll('.reel');
+
+let currentReelIdx = 0;
+
+function updateReelCounter() {
+  reelCounter.textContent = `${currentReelIdx + 1} / ${reels.length}`;
+}
+
+function openReels() {
+  reelsModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  currentReelIdx = 0;
+  scrollToReel(0);
+  updateReelCounter();
+}
+
+function closeReels() {
+  reelsModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function scrollToReel(idx) {
+  const reel = reels[idx];
+  if (reel) {
+    reel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    currentReelIdx = idx;
+    updateReelCounter();
+  }
+}
+
+function nextReel() {
+  currentReelIdx = (currentReelIdx + 1) % reels.length;
+  scrollToReel(currentReelIdx);
+}
+
+function prevReel() {
+  currentReelIdx = (currentReelIdx - 1 + reels.length) % reels.length;
+  scrollToReel(currentReelIdx);
+}
+
+reelsContainer.addEventListener('scroll', () => {
+  let newIdx = Math.round(reelsContainer.scrollTop / window.innerHeight);
+  if (newIdx >= reels.length) newIdx = reels.length - 1;
+  if (newIdx !== currentReelIdx) {
+    currentReelIdx = newIdx;
+    updateReelCounter();
+  }
+});
+
+openReelsBtn.addEventListener('click', openReels);
+closeReelsBtn.addEventListener('click', closeReels);
+prevReelBtn.addEventListener('click', prevReel);
+nextReelBtn.addEventListener('click', nextReel);
+
+document.addEventListener('keydown', e => {
+  if (!reelsModal.classList.contains('open')) return;
+  if (e.key === 'Escape')      closeReels();
+  if (e.key === 'ArrowUp')     prevReel();
+  if (e.key === 'ArrowDown')   nextReel();
+});
+
+reelsModal.addEventListener('click', e => {
+  if (e.target === reelsModal) closeReels();
+});
+
+let scrollTimeout;
+reelsContainer.addEventListener('wheel', e => {
+  e.preventDefault();
+  clearTimeout(scrollTimeout);
+  
+  if (Math.abs(e.deltaY) > 10) {
+    if (e.deltaY > 0) nextReel();
+    else prevReel();
+  }
+  
+  scrollTimeout = setTimeout(() => {}, 500);
+}, { passive: false });
+
+</script>
+
+</body>
+</html>
