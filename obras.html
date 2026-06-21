@@ -257,7 +257,7 @@
         </div>
       </article>
 
-      <article class="obra-card" data-cat="patio">
+      <article class="obra-card" data-cat="pavimentacao">
         <div class="obra-media clickable"
              data-gallery="coca"
              data-imgs='[
@@ -269,7 +269,7 @@
                alt="Coca-Cola — pavimentação de estacionamento" loading="lazy">
         </div>
         <div class="obra-body">
-          <p class="obra-tag">Pavimentação · 6 fotos</p>
+          <p class="obra-tag">Pavimentação · 1 foto</p>
           <h3>Coca-Cola</h3>
           <p>Pavimentação de estacionamento e pátio de manobra em grande área comercial — CBUQ com acabamento de qualidade premium.</p>
         </div>
@@ -351,7 +351,21 @@
         </div>
       </article>
 
-      
+      <article class="obra-card" data-cat="recapeamento">
+        <div class="obra-media video-switcher" data-videos='["assets/story/fresa.mp4","assets/story/fresa2.mp4"]'>
+          <video controls muted playsinline preload="metadata">
+            <source src="assets/story/fresa.mp4" type="video/mp4">
+            Seu navegador não suporta vídeo.
+          </video>
+          <button class="video-switch-btn" type="button" aria-label="Próximo vídeo">Próximo vídeo ▶</button>
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Recapeamento · 2 vídeos</p>
+          <h3>Fresa</h3>
+          <p>Demonstração de fresagem e preparação de base para recapeamento asfáltico.</p>
+        </div>
+      </article>
+
       <article class="obra-card" data-cat="condominios">
         <div class="obra-media">
           <iframe width="560" height="315"
@@ -592,6 +606,32 @@ document.querySelectorAll('.obra-media.clickable').forEach(media => {
     const imgs  = JSON.parse(media.dataset.imgs || '[]');
     const title = media.closest('.obra-card')?.querySelector('h3')?.textContent || '';
     if (imgs.length) openLb(imgs, 0, title);
+  });
+});
+
+document.querySelectorAll('.obra-media.video-switcher').forEach(media => {
+  const button = media.querySelector('.video-switch-btn');
+  const videos = JSON.parse(media.dataset.videos || '[]');
+  let currentIndex = 0;
+
+  function switchVideo() {
+    if (!videos.length) return;
+    currentIndex = (currentIndex + 1) % videos.length;
+    const video = media.querySelector('video');
+    const source = video.querySelector('source');
+    source.src = videos[currentIndex];
+    video.load();
+    video.play().catch(() => {});
+  }
+
+  button?.addEventListener('click', e => {
+    e.stopPropagation();
+    switchVideo();
+  });
+
+  media.addEventListener('click', e => {
+    if (e.target === button) return;
+    switchVideo();
   });
 });
 

@@ -416,6 +416,45 @@ h2.sec-titulo span{ color:var(--amarelo); }
 }
 .obra-card:hover .obra-media img{ transform:scale(1.04); }
 
+.obra-media.video-switcher{
+  cursor:pointer;
+}
+.obra-media.video-switcher .video-switch-btn{
+  position:absolute;
+  bottom:1rem;
+  right:1rem;
+  z-index:10;
+  padding:.85rem 1rem;
+  border:none;
+  background:rgba(245,197,24,.95);
+  color:#141414;
+  border-radius:999px;
+  font-size:var(--fs-sm);
+  font-weight:700;
+  letter-spacing:.05em;
+  cursor:pointer;
+  transition:transform .2s, background .2s, box-shadow .2s;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+.obra-media.video-switcher .video-switch-btn:hover{
+  transform:scale(1.06);
+  background:rgba(245,197,24,1);
+}
+.obra-media.video-switcher .video-hint{
+  position:absolute;
+  bottom:4rem;
+  left:1rem;
+  right:1rem;
+  z-index:10;
+  padding:.6rem 1rem;
+  border-radius:999px;
+  background:rgba(0,0,0,.55);
+  color:#fff;
+  font-size:var(--fs-xs);
+  text-align:center;
+  pointer-events:none;
+}
+
 .obra-body{ padding:1.2rem 1.25rem 1.5rem; }
 .obra-tag{
   font-size:var(--fs-xs); letter-spacing:.14em; text-transform:uppercase;
