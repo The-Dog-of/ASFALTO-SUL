@@ -144,21 +144,25 @@
     .reel-close:hover{ opacity:1; background:rgba(0,0,0,.8); }
     .reel-nav{
       position:absolute; z-index:2001;
-      font-size:1.75rem; color:rgba(255,255,255,.7); background:none;
-      border:none; cursor:pointer; padding:.5rem;
-      transition:color .2s, transform .2s;
+      width:3.5rem; height:3.5rem;
+      font-size:2rem; color:#fff;
+      background:rgba(0,0,0,.65); border:none; border-radius:50%;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 10px 25px rgba(0,0,0,.35);
+      transition:transform .2s, background .2s;
     }
     .reel-nav:hover{
-      color:#fff; transform:scale(1.15);
+      transform:scale(1.08);
+      background:rgba(0,0,0,.85);
     }
-    .reel-prev{ top:1rem; left:1rem; }
-    .reel-next{ top:1rem; right:4.5rem; }
+    .reel-prev{ top:50%; left:1rem; transform:translateY(-50%); }
+    .reel-next{ top:50%; right:1rem; transform:translateY(-50%); }
     .reel-indicator{
       position:absolute; bottom:1rem; left:50%; transform:translateX(-50%); z-index:2001;
-      background:rgba(0,0,0,.7); padding:.4rem .6rem;
+      background:rgba(0,0,0,.7); padding:.5rem .75rem;
       border-radius:99px; color:#fff;
-      font-size:var(--fs-xs); font-weight:600;
-      letter-spacing:.1em;
+      font-size:var(--fs-xs); font-weight:700;
+      letter-spacing:.12em;
     }
     @media(max-width:600px){
       .reels-container{
@@ -170,9 +174,9 @@
         border:none;
       }
       .reel-close{ top:.75rem; right:.75rem; font-size:1.5rem; }
-      .reel-nav{ font-size:1.5rem; }
-      .reel-prev{ left:.75rem; top:.75rem; }
-      .reel-next{ right:3.5rem; top:.75rem; }
+      .reel-nav{ width:3rem; height:3rem; font-size:1.6rem; }
+      .reel-prev{ left:.75rem; top:50%; transform:translateY(-50%); }
+      .reel-next{ right:.75rem; top:50%; transform:translateY(-50%); }
       .reel-info h3{ font-size:var(--fs-sm); }
       .reel-info p{ font-size:var(--fs-xs); }
       .reel-indicator{ bottom:.75rem; font-size:var(--fs-xs); }
@@ -193,6 +197,7 @@
         <li><a href="servicos.html">Serviços</a></li>
         <li><a href="clientes.html">Clientes</a></li>
         <li><a href="obras.html">Obras</a></li>
+        <li><a href="#reels" id="open-reels-nav">Reels</a></li>
         <li><a href="contato.html">Contato</a></li>
       </ul>
       <a href="contato.html" class="btn-orcamento">Pedir orçamento</a>
@@ -246,7 +251,7 @@
                alt="Havan — pavimentação de estacionamento" loading="lazy">
         </div>
         <div class="obra-body">
-          <p class="obra-tag">Pátio Industrial · 6 fotos</p>
+          <p class="obra-tag">Estacionamento de veiculos · 6 fotos</p>
           <h3>Havan</h3>
           <p>Pavimentação de estacionamento e pátio de manobra em grande área comercial — CBUQ com acabamento de qualidade premium.</p>
         </div>
@@ -264,7 +269,7 @@
                alt="Coca-Cola — pavimentação de estacionamento" loading="lazy">
         </div>
         <div class="obra-body">
-          <p class="obra-tag">Pátio Industrial · 6 fotos</p>
+          <p class="obra-tag">Pavimentação · 6 fotos</p>
           <h3>Coca-Cola</h3>
           <p>Pavimentação de estacionamento e pátio de manobra em grande área comercial — CBUQ com acabamento de qualidade premium.</p>
         </div>
@@ -311,6 +316,38 @@
           <p class="obra-tag">Pátio Industrial · 8 fotos</p>
           <h3>Ceva GM</h3>
           <p>Pavimentação de pátio para operação logística de alta movimentação de carga.</p>
+        </div>
+      </article>
+
+      <article class="obra-card" data-cat="patio">
+        <div class="obra-media clickable"
+             data-gallery="taurus"
+             data-imgs='[
+               "assets/img/taurus/taurus1.jpg"
+             ]'>
+          <img src="assets/img/taurus/taurus1.jpg"
+               alt="Taurus — Terraplamento de pátio industrial" loading="lazy">
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Pátio Industrial · 1 foto</p>
+          <h3>Taurus</h3>
+          <p>Terraplagem do patio da Taurus.</p>
+        </div>
+      </article>
+
+            <article class="obra-card" data-cat="patio">
+        <div class="obra-media clickable"
+             data-gallery="Ceee"
+             data-imgs='[
+               "assets/img/ceee/ceee.jpg"
+             ]'>
+          <img src="assets/img/ceee/ceee.jpg"
+               alt="Ceee = reparos na entrada da unidade" loading="lazy">
+        </div>
+        <div class="obra-body">
+          <p class="obra-tag">Pátio Industrial · 1 foto</p>
+          <h3>Ceee</h3>
+          <p>Conserto de entrada da unidade.</p>
         </div>
       </article>
 
@@ -415,6 +452,46 @@
       <div class="reel-info">
         <h3>Ceva GM</h3>
         <p>Pavimentação de pátio para operação logística de alta movimentação de carga.</p>
+      </div>
+    </div>
+
+    <div class="reel">
+      <video autoplay muted playsinline loop>
+        <source src="assets/story/fresa.mp4" type="video/mp4">
+      </video>
+      <div class="reel-info">
+        <h3>Fresa</h3>
+        <p>Operação com fresadora para remoção de pavimento antigo antes do recapeamento.</p>
+      </div>
+    </div>
+
+    <div class="reel">
+      <video autoplay muted playsinline loop>
+        <source src="assets/story/fresa2.mp4" type="video/mp4">
+      </video>
+      <div class="reel-info">
+        <h3>Fresa 2</h3>
+        <p>Fresagem de base e preparo de subleito para novo revestimento asfáltico.</p>
+      </div>
+    </div>
+
+    <div class="reel">
+      <video autoplay muted playsinline loop>
+        <source src="assets/story/terraplanagem.mp4" type="video/mp4">
+      </video>
+      <div class="reel-info">
+        <h3>Terraplanagem</h3>
+        <p>Preparação do terreno com corte, aterro e compactação antes de pavimentar.</p>
+      </div>
+    </div>
+
+    <div class="reel">
+      <video autoplay muted playsinline loop>
+        <source src="assets/story/hrell.mp4" type="video/mp4">
+      </video>
+      <div class="reel-info">
+        <h3>Reel Asfaltosul</h3>
+        <p>Vídeo institucional mostrando o trabalho de pavimentação e acabamento em campo.</p>
       </div>
     </div>
   </div>
@@ -558,12 +635,17 @@ function closeReels() {
   document.body.style.overflow = '';
 }
 
+let ignoreReelScroll = false;
+
 function scrollToReel(idx) {
   const reel = reels[idx];
   if (reel) {
-    reel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const top = reel.offsetTop;
+    ignoreReelScroll = true;
+    reelsContainer.scrollTo({ top, behavior: 'smooth' });
     currentReelIdx = idx;
     updateReelCounter();
+    window.setTimeout(() => { ignoreReelScroll = false; }, 250);
   }
 }
 
@@ -578,7 +660,10 @@ function prevReel() {
 }
 
 reelsContainer.addEventListener('scroll', () => {
-  let newIdx = Math.round(reelsContainer.scrollTop / window.innerHeight);
+  if (ignoreReelScroll) return;
+  const reelHeight = reels[0]?.offsetHeight || reelsContainer.clientHeight || 1;
+  let newIdx = Math.round(reelsContainer.scrollTop / reelHeight);
+  if (newIdx < 0) newIdx = 0;
   if (newIdx >= reels.length) newIdx = reels.length - 1;
   if (newIdx !== currentReelIdx) {
     currentReelIdx = newIdx;
@@ -590,6 +675,10 @@ openReelsBtn.addEventListener('click', openReels);
 closeReelsBtn.addEventListener('click', closeReels);
 prevReelBtn.addEventListener('click', prevReel);
 nextReelBtn.addEventListener('click', nextReel);
+document.getElementById('open-reels-nav')?.addEventListener('click', e => {
+  e.preventDefault();
+  openReels();
+});
 
 document.addEventListener('keydown', e => {
   if (!reelsModal.classList.contains('open')) return;
